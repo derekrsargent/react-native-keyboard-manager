@@ -1,6 +1,10 @@
 # react-native-keyboard-manager
 
-An example keyboard manager using Native Modules and Turbomodules to interface with the native keyboard API for iOS and Android
+An example keyboard manager using Native Modules and Turbomodules to interface with the native keyboard API for iOS and Android. Do not use in production. 
+
+## Generating this library
+
+In the terminal run `npx create-react-native-library@latest react-native-keyboard-manager` and select `Turbo module with backward compat` for the type of library and `Kotlin & Objective-C` for the languages. 
 
 ## Installation
 
@@ -17,10 +21,6 @@ import { multiply } from 'react-native-keyboard-manager';
 
 const result = await multiply(3, 7);
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 

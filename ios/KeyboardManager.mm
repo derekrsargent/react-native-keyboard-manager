@@ -7,7 +7,7 @@ RCT_EXPORT_MODULE()
 @synthesize bridge = _bridge;
 
 /*
- Can add these notification dispatch mechanism by overridding `init` instead, if so need to also
+ Can add these notification dispatch mechanisms by overridding `init` instead, if so need to also
  override requiresMainQueueSetup
  */
 - (void)startObserving {
@@ -15,7 +15,7 @@ RCT_EXPORT_MODULE()
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
-// RCTBridge class requires `supportedEvents` method to be overwridden
+// RCTBridge class requires `supportedEvents` method to be overridden
 - (NSArray<NSString *> *)supportedEvents {
     return @[@"keyboardShown", @"keyboardDismissed"];
 }

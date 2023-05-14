@@ -2,6 +2,8 @@
 
 An example keyboard manager using Native Modules and Turbomodules to interface with the native keyboard API for iOS and Android. Do not use in production. 
 
+![](https://github.com/derekrsargent/react-native-keyboard-manager/blob/main/README.gif)
+
 ## Usage
 
 Run `yarn` at the root of the project directory to install the dependancies, and either `yarn example ios` or `yarn example android` to run this project. 

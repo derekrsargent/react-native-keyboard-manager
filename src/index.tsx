@@ -1,4 +1,9 @@
-import { NativeModules, Platform } from 'react-native';
+import {
+  EmitterSubscription,
+  NativeEventEmitter,
+  NativeModules,
+  Platform,
+} from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-keyboard-manager' doesn't seem to be linked. Make sure: \n\n` +
@@ -13,7 +18,7 @@ const KeyboardManagerModule = isTurboModuleEnabled
   ? require('./NativeKeyboardManager').default
   : NativeModules.KeyboardManager;
 
-const KeyboardManager = KeyboardManagerModule
+const _KeyboardManager = KeyboardManagerModule
   ? KeyboardManagerModule
   : new Proxy(
       {},
@@ -24,6 +29,32 @@ const KeyboardManager = KeyboardManagerModule
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return KeyboardManager.multiply(a, b);
+const isIos = Platform.OS === 'ios';
+
+/* 
+iOS requires the native module to be passed to not throw an invariant error
+but it must be undefined for Android
+*/
+const KeyboardManagerEmitter = isIos
+  ? new NativeEventEmitter(_KeyboardManager)
+  : new NativeEventEmitter();
+
+/* 
+React Native docs recommend re-exporting the Native Module. We use a custom 
+class with static methods so that they're accessed on the class itself
+instead of directly accessed on instances of the class.
+*/
+export class KeyboardManager {
+  static didKeyboardShow(callback: any): EmitterSubscription {
+    return KeyboardManagerEmitter.addListener('keyboardShown', callback);
+  }
+
+  static didKeyboardDismiss(callback: any): EmitterSubscription {
+    return KeyboardManagerEmitter.addListener('keyboardDismissed', callback);
+  }
+
+  static removeAllListeners(): void {
+    KeyboardManagerEmitter.removeAllListeners('keyboardShown');
+    KeyboardManagerEmitter.removeAllListeners('keyboardDismissed');
+  }
 }

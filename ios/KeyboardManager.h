@@ -5,8 +5,10 @@
 @interface KeyboardManager : NSObject <NativeKeyboardManagerSpec>
 #else
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+#import <React/RCTLog.h>
 
-@interface KeyboardManager : NSObject <RCTBridgeModule>
+@interface KeyboardManager : RCTEventEmitter <RCTBridgeModule>
 #endif
 
 @end

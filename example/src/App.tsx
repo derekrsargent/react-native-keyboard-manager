@@ -1,19 +1,60 @@
-import * as React from 'react';
-
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-keyboard-manager';
+import React, { useEffect, useState } from 'react';
+import {
+  Keyboard,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { KeyboardManager } from 'react-native-keyboard-manager';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [text, onChangeText] = useState('Press here to start typing');
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  const isIos = Platform.OS === 'ios';
+
+  useEffect(() => {
+    KeyboardManager.didKeyboardShow((event: any) => {
+      setIsKeyboardShown(true);
+      setKeyboardHeight(event?.keyboardHeight || 0);
+    });
+
+    KeyboardManager.didKeyboardDismiss(() => {
+      setIsKeyboardShown(false);
+    });
+
+    return () => KeyboardManager.removeAllListeners();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Keyboard is
+            {isKeyboardShown
+              ? ` shown and its height is ${keyboardHeight} px.`
+              : ' dismissed!'}
+          </Text>
+          {isIos && (
+            <Text style={styles.text}>
+              Reminder to set 'Toggle Software Keyboard' (⌘K) if keyboard does
+              not display when text input is active
+            </Text>
+          )}
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeText}
+            value={text}
+          />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -21,11 +62,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 50,
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  input: {
+    width: 300,
+    height: 40,
+    marginTop: 50,
+    borderWidth: 1,
+    padding: 10,
+    textAlign: 'center',
+    borderRadius: 10,
+  },
+  title: {
+    height: 80,
+    fontSize: 30,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  text: {
+    textAlign: 'center',
+    color: 'grey',
+    fontWeight: 'bold',
+    margin: 20,
   },
 });

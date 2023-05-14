@@ -30,7 +30,7 @@ An example app is included so that we can test out our library. Update `App.tsx`
 
 Note that `KeyboardManager.mm` (which is an Objective-C++ file type) is included as `KeyboardManager.m` in the Xcode project settings and so you need to manually change the file name from `KeyboardManager.m` to `KeyboardManager.mm` so that Xcode can find it (the file name will be in red to indciate that Xcode cannot find it). This can be done by selecting the file you want to rename in the `Project Navigator` (which can be found on the left side of Xcode) and then select the `File Inspector` (which can be found on the right side of the Xcode) and the file name will be located in `Identity and Type` - edit the file name here and press enter. We need this to be an Objective-C++ file since the New Architecure related code uses C++ for the shared pointers, etc.  
 
-Since we want to emit events, we need to change our `KeyboardManager` to inherit from the superclass`RCTEventEmitter` instead of the default `NSObject` in the class implementation file `KeyboardManager.h`. The angle brackets in the class implementation indicates that our class will conform to the `<RCTBridgeModule>` protocol. 
+Since we want to emit events, we need to change our `KeyboardManager` to inherit from the superclass `RCTEventEmitter` instead of the default `NSObject` in the class implementation file `KeyboardManager.h`. The angle brackets in the class implementation indicates that our class will conform to the `<RCTBridgeModule>` protocol. 
 
 In Objective-C, the minus sign (-) at the front of the method name indicates that it is an instance method, which can be called on any instance of the class. This differentiates it from class methods, which can be called on the class itself.
 

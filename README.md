@@ -46,7 +46,7 @@ In our `index` file we then re-export a `KeyboardManager` class to make it more 
 
 ### Commit [c0f8fdc](https://github.com/derekrsargent/react-native-keyboard-manager/commit/c0f8fdc49fa445d33dfad0bc96029f320e254d9e)
 
-In this commit we add the Native Module for Android. We create a `KeyboardManager` class and implement the `startKeyboardListener()` method that adds a `ViewTreeObserver.OnGlobalLayoutListener` to the root view of the activity. Inside the listener, we calculate the keyboard height based on the visible window frame and emit the appropriate event (`keyboardShown` or `keyboardDismissed`) to React Native using the `emitEvent()` function.
+In this commit we add the Native Module for Android. We create a `KeyboardManager` class and implement the `startKeyboardListener()` method that adds a `ViewTreeObserver.OnGlobalLayoutListener` to the root view of the activity. Inside the listener, we calculate the keyboard height based on the visible window frame and emit the appropriate event (`keyboardShown` or `keyboardDismissed`) to React Native using the `sendEvent()` function.
 
 The `onCatalystInstanceDestroy` method is a lifecycle method in React Native Android modules that is called when the React Native JavaScript runtime is destroyed. This method is called when the React Native bridge is shut down or when the module is being removed from the React Native application. When the `onCatalystInstanceDestroy` method is called, the Android module should release any resources that were acquired during its initialization and allocation. This could include releasing any event listeners, stopping any background tasks, or cleaning up any other resources that were allocated during the lifecycle of the module.
 

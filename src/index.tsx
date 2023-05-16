@@ -35,9 +35,12 @@ const isIos = Platform.OS === 'ios';
 iOS requires the native module to be passed to not throw an invariant error
 but it must be undefined for Android
 */
-const KeyboardManagerEmitter = isIos
+export const KeyboardManagerEmitter = isIos
   ? new NativeEventEmitter(_KeyboardManager)
   : new NativeEventEmitter();
+
+// KeyboardManagerEmitter.addListener('keyboardShown', () => {});
+// KeyboardManagerEmitter.addListener('keyboardDismissed', () => {});
 
 /* 
 React Native docs recommend re-exporting the Native Module. We use a custom 

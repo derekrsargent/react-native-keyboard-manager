@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
+  TurboModuleRegistry,
   View,
 } from 'react-native';
 import { KeyboardManager } from 'react-native-keyboard-manager';
@@ -15,6 +16,22 @@ export default function App() {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [text, onChangeText] = useState('Press here to start typing');
+  const [isTurboModule, setIsTurboModule] = useState(false);
+
+  useEffect(() => {
+    try {
+      /* 
+      The `__turboModuleProxy` property only exists on a Turbo Module, but when
+      it does exist it returns `undefined`, how about that!?
+      */
+      const MyTurboModule = TurboModuleRegistry.getEnforcing('KeyboardManager');
+      //@ts-expect-error
+      MyTurboModule.__turboModuleProxy;
+      setIsTurboModule(true);
+    } catch (e) {
+      setIsTurboModule(false);
+    }
+  }, []);
 
   const isIos = Platform.OS === 'ios';
 
@@ -35,6 +52,10 @@ export default function App() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
+          <Text style={styles.text}>
+            This app is using
+            {isTurboModule ? ' Turbo Modules' : ' Native Modules'}
+          </Text>
           <Text style={styles.title}>
             Keyboard is
             {isKeyboardShown

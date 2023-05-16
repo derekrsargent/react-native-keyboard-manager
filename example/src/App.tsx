@@ -7,8 +7,8 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  View,
   TurboModuleRegistry,
+  View,
 } from 'react-native';
 import { KeyboardManager } from 'react-native-keyboard-manager';
 

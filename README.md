@@ -24,11 +24,11 @@ This section provides a description of the development steps used to create this
 
 ### Commit [b07967a](https://github.com/derekrsargent/react-native-keyboard-manager/commit/b07967a8ce4bc1691750d5a0acac7ea03b97a52a)
 
-In this commit we generate the library scaffolding. In the terminal run `npx create-react-native-library@latest react-native-keyboard-manager` and select `Turbo module with backward compat` for the type of library and `Kotlin & Objective-C` for the languages. (Note: run `yarn` at the root of the project directory to install the dependencies after)
+In this commit we generate the library scaffolding. In the terminal run `npx create-react-native-library@latest react-native-keyboard-manager` and select `Turbo module with backward compat` for the type of library and `Kotlin & Objective-C` for the languages. (Note: run `yarn bootstrap` at the root of the project directory to install the dependencies and pods after).
 
 ### Commit [3167ec5](https://github.com/derekrsargent/react-native-keyboard-manager/commit/3167ec5b368018db6ceab09b224bd38fbd9da46d)
 
-In this commit we add the Native Module for iOS. An example app is included so that we can test out our library. Update `App.tsx` in this example app. 
+In this commit we add the Native Module for iOS. An example app is already included from the previous scaffolding so that we can test out our library. Update `App.tsx` in this example app. 
 
 Note that `KeyboardManager.mm` (which is an Objective-C++ file type) is included as `KeyboardManager.m` in the Xcode project settings and so you need to manually change the file name from `KeyboardManager.m` to `KeyboardManager.mm` so that Xcode can find it (the file name will be in red to indicate that Xcode cannot find it). This can be done by selecting the file you want to rename in the `Project Navigator` (which can be found on the left side of Xcode) and then select the `File Inspector` (which can be found on the right side of the Xcode) and the file name will be located in `Identity and Type` - edit the file name here and press enter. We need this to be an Objective-C++ file since the New Architecture related code uses C++ for the shared pointers, etc.  
 
@@ -56,18 +56,18 @@ The `dpToPx` method is used to convert a value from Density-independent Pixels (
 
 In this commit we enabled the new architecture and add the Turbo Module for iOS. First, run the command `RCT_NEW_ARCH_ENABLED=1 yarn example pods` to generate the pods using the new architecture. By setting the `RCT_NEW_ARCH_ENABLED` environment variable to `1` we are indicating that the new architecture should be enabled. This will also generate the Codegen files in the `example/ios/build/RNKeyboardManagerSpec` folder, which includes the `RNKeyboardManagerSpec.h` header file which is used as a protocol for the `KeyboardManager` class interface. 
 
-To compare, the `KeyboardManager` class interface with the new architecture (Turbo Modules):
+To compare, the `KeyboardManager` class interface with the new architecture (Turbo Modules):  
 `@interface KeyboardManager : RCTEventEmitter <NativeKeyboardManagerSpec>`
 
-And the `KeyboardManager` class interface with the old architecture (Native Modules):
+And the `KeyboardManager` class interface with the old architecture (Native Modules):  
 `@interface KeyboardManager : RCTEventEmitter <RCTBridgeModule>`
 
 We can see from this that we don't use the JS Bridge anymore, but instead we use the new JS Interface (JSI). The JSI is a mechanism that allows synchronous and direct communication between JavaScript and native code without the need for the traditional asynchronous bridge-based communication. Turbo Modules leverage the JSI to improve the performance of Native Module operations in React Native. With the JSI, Turbo Modules can directly interact with JavaScript objects and functions, eliminating the overhead of serialization/deserialization and bridging between JavaScript and native code. By using the JSI, Turbo Modules can achieve faster method calls, reduced memory footprint, and improved interoperability between JavaScript and native code.
 
-When metro is running, we can confirm that the app is using the new architecture by looking out specifically for `"fabric":true` and `"concurrentRoot":true`. 
+When metro is running, we can confirm that the app is using the new architecture by looking out specifically for `"fabric":true` and `"concurrentRoot":true` (a reminder that Fabric is the rendering engine that was introduced in the new architecture).  
 `LOG  Running "KeyboardManagerExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}`
 
-To compare, when metro is running with the old architecture the log shows:
+To compare, when metro is running with the old architecture the log shows:  
 `LOG  Running "KeyboardManagerExample" with {"rootTag":1,"initialProps":{}}`
 
 ## License

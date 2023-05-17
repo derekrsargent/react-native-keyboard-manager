@@ -2,7 +2,7 @@
 
 An example keyboard manager using Native Modules and Turbo Modules to interface with the native keyboard API for iOS and Android. Do not use in production. 
 
-The Keyboard was selected as the native API to interface with since it works well on both the iOS simulator and Android emulator. The purpose of this example is to showcase emitting events from the native side to React Native since the documentation on this is rather lacking. Regular functions, such as *multiply*, are well documented in the React Native docs.
+The Keyboard was selected as the native API to interface with since it works well on both the iOS simulator and Android emulator. The purpose of this example is to showcase emitting events from the native side to React Native since the documentation on this is rather lacking for Turbo Modules. Regular functions, such as *multiply*, are well documented in the React Native docs.
 
 ![](https://github.com/derekrsargent/react-native-keyboard-manager/blob/main/README.gif)
 

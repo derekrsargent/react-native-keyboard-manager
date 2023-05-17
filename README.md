@@ -16,7 +16,7 @@ import { KeyboardManager } from 'react-native-keyboard-manager';
 // ...
 
 KeyboardManager.didKeyboardShow((event: any) => {
-    ...
+    // ...
 });
 ```
 
@@ -32,7 +32,7 @@ In this commit we generate the library scaffolding. In the terminal run `npx cre
 
 In this commit we add the Native Module for iOS. An example app is already included from the previous scaffolding so that we can test out our library. Update `App.tsx` in this example app. 
 
-Note that `KeyboardManager.mm` (which is an Objective-C++ file type) is included as `KeyboardManager.m` in the Xcode project settings and so you need to manually change the file name from `KeyboardManager.m` to `KeyboardManager.mm` so that Xcode can find it (the file name will be in red to indicate that Xcode cannot find it). This can be done by selecting the file you want to rename in the `Project Navigator` (which can be found on the left side of Xcode) and then select the `File Inspector` (which can be found on the right side of the Xcode) and the file name will be located in `Identity and Type` - edit the file name here and press enter. We need this to be an Objective-C++ file since the New Architecture related code uses C++ for the shared pointers, etc.  
+Note that `KeyboardManager.mm` (which is an Objective-C++ file type) is included as `KeyboardManager.m` (a regular Objective-C file without C++ support) in the Xcode project settings and so you need to manually change the file name from `KeyboardManager.m` to `KeyboardManager.mm` so that Xcode can find it (the file name will be in red to indicate that Xcode cannot find it). This can be done by selecting the file you want to rename in the `Project Navigator` (which can be found on the left side of Xcode) and then select the `File Inspector` (which can be found on the right side of the Xcode) and the file name will be located in `Identity and Type` - edit the file name here and press enter. We need this to be an Objective-C++ file since the New Architecture related code uses C++ for the shared pointers, etc.  
 
 Since we want to emit events, we need to change our `KeyboardManager` to inherit from the superclass `RCTEventEmitter` instead of the default `NSObject` in the class interface file `KeyboardManager.h`. The angle brackets in the class interface indicates that our class will conform to the `RCTBridgeModule` protocol. 
 

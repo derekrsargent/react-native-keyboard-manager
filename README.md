@@ -8,7 +8,7 @@ The Keyboard was selected as the native API to interface with since it works wel
 
 ## Usage
 
-Run `yarn` at the root of the project directory to install the dependencies, and either `yarn example ios` or `yarn example android` to run this project. 
+Run `yarn bootstrap` at the root of the project directory to install all dependencies and pods, and then either `yarn example ios` or `yarn example android` to run this project. 
 
 ```js
 import { KeyboardManager } from 'react-native-keyboard-manager';

@@ -70,13 +70,15 @@ And the `KeyboardManager` class interface with the old architecture (Native Modu
 
 We can see from this that we don't use the JS Bridge anymore, but instead we use the new JS Interface (JSI). The JSI is a mechanism that allows synchronous and direct communication between JavaScript and native code without the need for the traditional asynchronous bridge-based communication. Turbo Modules leverage the JSI to improve the performance of Native Module operations in React Native. With the JSI, Turbo Modules can directly interact with JavaScript objects and functions, eliminating the overhead of serialization/deserialization and bridging between JavaScript and native code. By using the JSI, Turbo Modules can achieve faster method calls, reduced memory footprint, and improved interoperability between JavaScript and native code.
 
+A note that if we remove the `NativeKeyboardManagerSpec` protocol from the `KeyboardManager` class interface that we wouldn't need to add the `addListener` and `removeListeners` to the Turbo Module spec and the emitted events would be received on the React Native side. However, we then couldn't declare any regular methods (non-event driven) like `add` or `multiply` in the Turbo Module spec and so that solution is only valid when the Turbo Module will *only* be emitting events.
+
 When metro is running, we can confirm that the app is using the new architecture by looking out specifically for `"fabric":true` and `"concurrentRoot":true` (a reminder that Fabric is the rendering engine that was introduced in the new architecture).  
 `LOG  Running "KeyboardManagerExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}`
 
 To compare, when metro is running with the old architecture the log shows:  
 `LOG  Running "KeyboardManagerExample" with {"rootTag":1,"initialProps":{}}`
 
-### Commit [4ea1f4a](https://github.com/derekrsargent/react-native-keyboard-manager/commit/4ea1f4a3ce9c67b6ae78a9e57a913c54efd8735e)
+### Commit [0db7cfb](https://github.com/derekrsargent/react-native-keyboard-manager/commit/0db7cfbcf78cb7984cc589fc3990784fa788796b)
 
 In this commit we enable the new architecture and add the Turbo Module for Android. The abstract class definition for the new architecture is automatically used by changing the source directory from `oldarch` to `newarch` based on a conditional in `build.gradle`:   
 ```java

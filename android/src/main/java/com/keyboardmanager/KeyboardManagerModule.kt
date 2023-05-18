@@ -25,12 +25,6 @@ class KeyboardManagerModule internal constructor(context: ReactApplicationContex
   }
 
   @ReactMethod
-  override fun addListener(eventName: String) {}
-
-  @ReactMethod
-  override fun removeListeners(count: Double) {}
-
-  @ReactMethod
   fun startKeyboardListener() {
     val rootView = currentActivity?.window?.decorView?.rootView
 

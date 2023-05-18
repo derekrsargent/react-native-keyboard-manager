@@ -78,7 +78,7 @@ To compare, when metro is running with the old architecture the log shows:
 
 ### Commit [4ea1f4a](https://github.com/derekrsargent/react-native-keyboard-manager/commit/4ea1f4a3ce9c67b6ae78a9e57a913c54efd8735e)
 
-In this commit we enable the new architecture and add the Turbo Module for Android. The abstract class definition for the new architecture:   
+In this commit we enable the new architecture and add the Turbo Module for Android. The abstract class definition for the new architecture is automatically used by changing the source directory from `oldarch` to `newarch` based on a conditional in `build.gradle`:   
 ```java
 abstract class KeyboardManagerSpec internal constructor(context: ReactApplicationContext) :
   NativeKeyboardManagerSpec(context) {
@@ -90,7 +90,7 @@ abstract class KeyboardManagerSpec internal constructor(context: ReactApplicatio
   ReactContextBaseJavaModule(context) {
 }
 ```
-We can see that there is only a slight difference.  
+We can see that the only difference is that we are now invoking the constructor of the `NativeKeyboardManagerSpec` class instead of the `ReactContextBaseJavaModule` class.  
 
 `NativeKeyboardManagerSpec(context)` is invoking the constructor of the `NativeKeyboardManagerSpec` class with the `context` parameter. When a class extends another class, the parent class constructor can be invoked using the `super` keyword followed by parentheses with the necessary arguments. In this case, `NativeKeyboardManagerSpec(context)` is calling the constructor of the `NativeKeyboardManagerSpec` class and passing the `context` parameter to it. The return type of the class is `KeyboardManagerSpec`. The `abstract` keyword indicates that the class is abstract, meaning it cannot be instantiated directly (does not have an implementation in its class) but must be subclassed. The `internal` modifier specifies that the class is only accessible within the same module. The constructor parameter `context` is of type `ReactApplicationContext`. We subclass this abstract class in the `KeyboardManagerModule` class where we previously implemented our `startKeyboardListener`, `dpToPx`, `pxToDp`, `sendEvent` etc methods.  
 
@@ -109,7 +109,7 @@ By implementing these two missing methods we get a successful build (they do not
 ```java
 newArchEnabled=true
 ```
-in `example/android/gradle.properties`)
+in `example/android/gradle.properties`).
 
 ## License
 

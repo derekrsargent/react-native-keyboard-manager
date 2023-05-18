@@ -56,7 +56,7 @@ The `dpToPx` method is used to convert a value from Density-independent Pixels (
 
 ### Commit [ad680cd](https://github.com/derekrsargent/react-native-keyboard-manager/commit/ad680cd9a1b643e5d02d99705fa4b453c3c71289)
 
-In this commit we enabled the new architecture and add the Turbo Module for iOS. First, run the command `RCT_NEW_ARCH_ENABLED=1 yarn example pods` to generate the pods using the new architecture. By setting the `RCT_NEW_ARCH_ENABLED` environment variable to `1` we are indicating that the new architecture should be enabled. An alternate way of doing this is to explicitly adding `ENV["RCT_NEW_ARCH_ENABLED"]="1"` in the Podfile located in the `example/ios/` folder and then running `yarn example pods`. This will also generate the Codegen files in the `example/ios/build/RNKeyboardManagerSpec/` folder, which includes the `RNKeyboardManagerSpec.h` header file which is used as a protocol for the `KeyboardManager` class interface. 
+In this commit we enable the new architecture and add the Turbo Module for iOS. First, run the command `RCT_NEW_ARCH_ENABLED=1 yarn example pods` to generate the pods using the new architecture. By setting the `RCT_NEW_ARCH_ENABLED` environment variable to `1` we are indicating that the new architecture should be enabled. An alternate way of doing this is to explicitly adding `ENV["RCT_NEW_ARCH_ENABLED"]="1"` in the Podfile located in the `example/ios/` folder and then running `yarn example pods`. This will also generate the Codegen files in the `example/ios/build/RNKeyboardManagerSpec/` folder, which includes the `RNKeyboardManagerSpec.h` header file which is used as a protocol for the `KeyboardManager` class interface. 
 
 To compare, the `KeyboardManager` class interface with the new architecture (Turbo Modules): 
 ```objectivec
@@ -78,7 +78,7 @@ To compare, when metro is running with the old architecture the log shows:
 
 ### Commit [4ea1f4a](https://github.com/derekrsargent/react-native-keyboard-manager/commit/4ea1f4a3ce9c67b6ae78a9e57a913c54efd8735e)
 
-In this commit we enabled the new architecture and add the Turbo Module for Android. The abstract class definition for the new architecture:   
+In this commit we enable the new architecture and add the Turbo Module for Android. The abstract class definition for the new architecture:   
 ```java
 abstract class KeyboardManagerSpec internal constructor(context: ReactApplicationContext) :
   NativeKeyboardManagerSpec(context) {
@@ -97,7 +97,8 @@ We can see that there is only a slight difference.
 The `NativeKeyboardManagerSpec` is created by Codegen and is generated in `android/build/generated/source/codegen/java/com/keyboardmanager/NativeKeyboardManagerSpec.java`.  
 
 If we run the project without any changes we'll get the following build errors:  
-`Class 'KeyboardManagerModule' is not abstract and does not implement abstract base class member public abstract fun addListener(eventName: String): Unit defined in com.keyboardmanager.KeyboardManagerSpec` and,  
+`Class 'KeyboardManagerModule' is not abstract and does not implement abstract base class member public abstract fun addListener(eventName: String): Unit defined in com.keyboardmanager.KeyboardManagerSpec`  
+and,  
 `Class 'KeyboardManagerModule' is not abstract and does not implement abstract base class member public abstract fun removeListeners(count: Double): Unit defined in com.keyboardmanager.KeyboardManagerSpec`
 
 We also need to include the override modifier or we'll get the following build errors:  
@@ -105,7 +106,7 @@ We also need to include the override modifier or we'll get the following build e
 `'removeListeners' hides member of supertype 'KeyboardManagerSpec' and needs 'override' modifier.`  
 
 By implementing these two missing methods we get a successful build (they do not need the `@ReactMethod` decorator but this allows us to access these methods from the React Native side if required). We should note that these two methods are never actually called. This is because we call `addListener` on the `NativeEventEmitter` of the Module and not the Module itself, and so React Native provides the `addListener` implementation. We need to provide `addListener` and `removeListeners` in the Turbo Module spec for iOS. On Android, To run the project using the new architecture run the command `ORG_GRADLE_PROJECT_newArchEnabled=true yarn example android` (an alternate method of enabling the new architecture is to change the `newArchEnabled` boolean to `true`, 
-```
+```java
 newArchEnabled=true
 ```
 in `example/android/gradle.properties`)
